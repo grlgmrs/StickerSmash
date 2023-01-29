@@ -5,11 +5,16 @@ import {
   CircleButton,
   EmojiList,
   EmojiPicker,
+  EmojiSticker,
   IconButton,
   ImageViewer,
 } from "./components";
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
+import {
+  GestureHandlerRootView,
+  PanGestureHandler,
+} from "react-native-gesture-handler";
 
 const placeholderImage = require("./assets/images/background-image.png");
 
@@ -36,6 +41,7 @@ export default function App() {
   const onReset = () => {
     setShowAppOptions(false);
     setSelectedImage(null);
+    setPickedEmoji(null);
   };
 
   const onAddSticker = () => {
@@ -51,12 +57,15 @@ export default function App() {
   console.log(showAppOptions);
 
   return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={styles.container}>
       <View style={styles.imageContainer}>
         <ImageViewer
           placeholderImageSource={placeholderImage}
           selectedImage={selectedImage}
         />
+        {pickedEmoji && (
+          <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
+        )}
       </View>
       {showAppOptions ? (
         <View style={styles.optionsContainer}>
@@ -87,7 +96,7 @@ export default function App() {
         <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
       </EmojiPicker>
       <StatusBar style="auto" />
-    </View>
+    </GestureHandlerRootView>
   );
 }
 
